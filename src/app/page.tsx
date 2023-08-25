@@ -67,6 +67,7 @@ export default async function Home() {
         <main>
           {channels.map((f: any) => (
             <ChannelCard
+              key={f.display_name}
               isLive={f.liveId}
               name={f.display_name}
               description={f.description}
