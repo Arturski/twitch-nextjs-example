@@ -7,7 +7,6 @@ import {
 } from "@/api/twitch-api";
 import Topbar from "@/components/topbar.component";
 import ChannelCard from "@/components/channel-card.component";
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import SignOutAction from "@/components/sign-out-action.component";
 
@@ -15,7 +14,6 @@ async function deleteTokens() {
   "use server";
   console.log("[DEBUG] Deleting tokens and redirecting to login.");
   cookies().delete("next-auth.session-token");
-  redirect("/login");
 }
 
 export default async function Home() {
@@ -48,7 +46,9 @@ export default async function Home() {
       console.log("[DEBUG] Retrieved follows details:", followsDetails);
 
       followsDetails.sort((a: any, b: any) => {
-        console.log(`[DEBUG] Sorting follows details: ${a.display_name} vs ${b.display_name}`);
+        console.log(
+          `[DEBUG] Sorting follows details: ${a.display_name} vs ${b.display_name}`
+        );
         let x = a.display_name.toLowerCase();
         let y = b.display_name.toLowerCase();
 
@@ -103,7 +103,19 @@ export default async function Home() {
       </>
     );
   } else {
-    console.log("[DEBUG] No session found. Redirecting to login.");
-    redirect("/login");
+    console.log("[DEBUG] No session found. Displaying login message.");
+
+    return (
+      <div className="w-screen h-screen flex justify-center items-center">
+        <div className="text-center">
+          <h1 className="text-xl font-bold text-gray-700">
+            You are not logged in.
+          </h1>
+          <p className="text-gray-600">
+            Please <a href="/login" className="text-violet-700 underline">log in</a> to access your channels.
+          </p>
+        </div>
+      </div>
+    );
   }
 }
