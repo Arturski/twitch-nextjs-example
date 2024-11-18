@@ -21,6 +21,8 @@ export default async function Home() {
   const session: any = await getServerSession(authOptions);
   const channels = [];
 
+  console.log(session);
+
   if (!!session) {
     try {
       const accessToken = session.token.access_token;
